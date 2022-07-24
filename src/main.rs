@@ -61,7 +61,7 @@ impl Minesweeper {
         Minesweeper {playing, grid, opened, counts, width, height}
     }
 
-    fn left_click(&mut self, x: usize, y: usize) {
+    fn proccess_left_click(&mut self, x: usize, y: usize) {
         match self.grid[y][x] {
             Cell::Bomb => {
                 self.opened.push((x, y));
@@ -72,14 +72,14 @@ impl Minesweeper {
                 if self.counts[y][x] != 0 {
                     self.opened.push((x, y));
                 } else {
-                    self.open_empty(x, y)
+                    self.open_empty_cell(x, y)
                 }
             }
             _ => {}
         }
     }
 
-    fn right_click(&mut self, x: usize, y: usize) {
+    fn proccess_right_click(&mut self, x: usize, y: usize) {
         match self.grid[y][x] {
             Cell::Empty       => self.grid[y][x] = Cell::Flagged,
             Cell::Bomb        => self.grid[y][x] = Cell::FlaggedBomb,
@@ -88,7 +88,7 @@ impl Minesweeper {
         }
     }
 
-    fn open_empty(&mut self, x: usize, y: usize) {
+    fn open_empty_cell_cell(&mut self, x: usize, y: usize) {
         if self.opened.contains(&(x, y)) {
             return;
         }
@@ -108,13 +108,13 @@ impl Minesweeper {
 
                 if self.width as isize > nx && nx >= 0 && self.height as isize > ny && ny >= 0 {
                     self.opened.push((x, y));
-                    self.open_empty(nx as usize, ny as usize);
+                    self.open_empty_cell(nx as usize, ny as usize);
                 }
             }
         }
     }
 
-    fn run(&mut self) {
+    fn run_boy_runing(&mut self) {
         let mut end = true;
 
         for e in &self.grid {
@@ -159,9 +159,9 @@ impl Minesweeper {
         let x = next_number() - 1;
         let y = next_number() - 1;
         if click == "L" {
-            self.left_click(x, y)
+            self.proccess_left_click(x, y)
         } else {
-            self.right_click(x, y)
+            self.proccess_right_click(x, y)
         }
     }
 
@@ -225,7 +225,7 @@ fn main() {
 
     loop {
         ms.print();
-        ms.run();
+        ms.run_boy_runing();
         if !ms.playing {
             break;
         }
